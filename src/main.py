@@ -18,12 +18,12 @@ config = read_config(config_path)
 main_logger.info(f"已成功加载配置，默认轮询周期为 {config.poll_interval} 秒")
 
 
-print("=" * 70)
-print(
+main_logger.info("=" * 70)
+main_logger.info(
     f"小饭煲IP：{config.cooker_config.ip}\t小饭煲TOKEN：{mask_password(config.cooker_config.token)}"
 )
-print(f"BARK TOKEN：{mask_password(config.push_config.token)}")
-print("=" * 70)
+main_logger.info(f"BARK TOKEN：{mask_password(config.push_config.token)}")
+main_logger.info("=" * 70)
 
 
 setToken(config.push_config.token)
