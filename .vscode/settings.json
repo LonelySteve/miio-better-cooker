@@ -1,0 +1,11 @@
+{
+    "yaml.customTags": [
+        "!Config mapping" ,
+        "!CookerConfig mapping",
+        "!Mealtime mapping",
+        "!MealProfile mapping",
+        "!PushConfig mapping",
+        "!time scalar",
+        "!env scalar"
+    ],
+}

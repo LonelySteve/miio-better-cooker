@@ -1,0 +1,44 @@
+!Config
+poll_interval: 30 # 轮询时间间隔
+# 电饭煲配置
+cooker_config: !CookerConfig
+  name: 米家小饭煲
+  ip: !env ${COOKER_IP}
+  token: !env ${COOKER_TOKEN}
+  akw: true
+  unpluggedCheck: true
+  unpluggedMaxDuration: 60
+  unpluggedAutoStopAkw: true
+  unpluggedMaxReminderCount: 3
+  meal_profile_list:
+    # 早上煮粥
+    - !MealProfile
+      type: Gongee
+      time: 
+        usual_time: !time 8:10
+        earliest_time: !time 6:00
+        latest_time: !time 7:10
+    # 中午煮饭（偏向预约，使用正常时间煮饭）
+    - !MealProfile
+      type: FineRice
+      time: 
+        usual_time: !time 11:30
+        earliest_time: !time 10:40
+        latest_time: !time 11:20
+    # 中午快煮饭（偏向节约时间，早上忘了预约现煮的情况）
+    - !MealProfile
+      type: QuickRice
+      time: 
+        usual_time: !time 12:00
+        earliest_time: !time 11:20 
+        latest_time: !time 12:45
+    # 晚上煮饭
+    - !MealProfile 
+      type: FineRice
+      time:
+        usual_time: !time 18:00
+        earliest_time: !time 17:30
+        latest_time: !time 20:30
+# 推送配置
+push_config: !PushConfig
+  token: !env ${BARK_TOKEN}
