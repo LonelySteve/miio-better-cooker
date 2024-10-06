@@ -5,3 +5,7 @@ services:
     volumes:
       - /etc/timezone:/etc/timezone
       - /etc/localtime:/etc/localtime
+    environment:
+      COOKER_IP: ${COOKER_IP}
+      COOKER_TOKEN: ${COOKER_TOKEN}
+      BARK_TOKEN: ${BARK_TOKEN}
