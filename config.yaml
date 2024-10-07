@@ -14,28 +14,28 @@ cooker_config: !CookerConfig
     # 早上煮粥
     - !MealProfile
       type: Gongee
-      time: 
+      time: !Mealtime
         usual_time: !time 8:10
         earliest_time: !time 6:00
         latest_time: !time 7:10
     # 中午煮饭（偏向预约，使用正常时间煮饭）
     - !MealProfile
       type: FineRice
-      time: 
+      time: !Mealtime
         usual_time: !time 11:30
         earliest_time: !time 10:40
         latest_time: !time 11:20
     # 中午快煮饭（偏向节约时间，早上忘了预约现煮的情况）
     - !MealProfile
       type: QuickRice
-      time: 
+      time: !Mealtime
         usual_time: !time 12:00
-        earliest_time: !time 11:20 
+        earliest_time: !time 11:20
         latest_time: !time 12:45
     # 晚上煮饭
-    - !MealProfile 
+    - !MealProfile
       type: FineRice
-      time:
+      time: !Mealtime
         usual_time: !time 18:00
         earliest_time: !time 17:30
         latest_time: !time 20:30
