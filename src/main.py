@@ -1,6 +1,6 @@
 import argparse
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from bark import pushMessage, setToken
 from config import read_config
@@ -97,8 +97,11 @@ def task():
         scheduled = True
         return
 
+    meal_profile_list = config.cooker_config.meal_profile_list
+    meal_profile_list = sorted(meal_profile_list, key=lambda profile: profile.time)
+
     # 基本算法是，遍历 meal_profile_list，若当前时间恰好处于某一个就餐时间段内，则自动执行烹饪操作，否则将预约下一时间段的通常就餐时间开始烹饪
-    for profile in config.cooker_config.meal_profile_list:
+    for profile in meal_profile_list:
         earliest_time = profile.time.earliest_time.to_today_time()
         latest_time = profile.time.latest_time.to_today_time()
         usual_time = profile.time.usual_time.to_today_time()
@@ -116,6 +119,26 @@ def task():
             break
         elif now < earliest_time:
             delta = usual_time - now
+            minutes = delta.seconds // 60
+            DEFAULT_COOKER.start(
+                PROFILES[profile.type],
+                schedule=minutes,
+                akw=config.cooker_config.akw,
+            )
+            scheduled = True
+
+            main_logger.info(
+                f"小饭煲已上线，预定 {usual_time.strftime('%H:%M')}（{minutes}分钟后）烹饪完成（{profile.type}）并自动保温"
+            )
+            pushMessage(
+                config.cooker_config.name,
+                f"自动预定 {usual_time.strftime('%H:%M')}（{minutes}分钟后）烹饪完成（{profile.type}）并自动保温",
+            )
+            break
+        else:
+            # 预约下一天
+            next_day = now + timedelta
+            delta = meal_profile_list[0].time.earliest_time.to_date_time(next_day) - now
             minutes = delta.seconds // 60
             DEFAULT_COOKER.start(
                 PROFILES[profile.type],

@@ -13,10 +13,12 @@ class Time(tuple):
     def __repr__(self) -> str:
         return "Time(%s,%s)" % self
 
-    def to_today_time(self):
-        now = datetime.now()
+    def to_date_time(self, date: datetime):
         hour, minutes = self
-        return now.replace(hour=hour, minute=minutes)
+        return date.replace(hour=hour, minute=minutes)
+
+    def to_today_time(self):
+        return self.to_date_time(datetime.now())
 
 
 def time_representer(dumper: yaml.Dumper, data: Time):
@@ -65,6 +67,42 @@ class Mealtime(yaml.YAMLObject):
         self.earliest_time = earliest_time
         self.latest_time = latest_time
         super().__init__()
+
+    def __lt__(self, other):
+        # Compare earliest_time
+        if isinstance(other, Mealtime):
+            return self.earliest_time < other.earliest_time
+        return NotImplemented
+
+    def __le__(self, other):
+        # Compare earliest_time
+        if isinstance(other, Mealtime):
+            return self.earliest_time <= other.earliest_time
+        return NotImplemented
+
+    def __eq__(self, other):
+        # Compare earliest_time
+        if isinstance(other, Mealtime):
+            return self.earliest_time == other.earliest_time
+        return NotImplemented
+
+    def __ne__(self, other):
+        # Compare earliest_time
+        if isinstance(other, Mealtime):
+            return self.earliest_time != other.earliest_time
+        return NotImplemented
+
+    def __gt__(self, other):
+        # Compare earliest_time
+        if isinstance(other, Mealtime):
+            return self.earliest_time > other.earliest_time
+        return NotImplemented
+
+    def __ge__(self, other):
+        # Compare earliest_time
+        if isinstance(other, Mealtime):
+            return self.earliest_time >= other.earliest_time
+        return NotImplemented
 
 
 class MealProfile(yaml.YAMLObject):
