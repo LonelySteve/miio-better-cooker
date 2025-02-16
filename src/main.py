@@ -135,26 +135,25 @@ def task():
                 f"自动预定 {usual_time.strftime('%H:%M')}（{minutes}分钟后）烹饪完成（{profile.type}）并自动保温",
             )
             break
-        else:
-            # 预约下一天
-            next_day = now + timedelta(days=1)
-            delta = meal_profile_list[0].time.earliest_time.to_date_time(next_day) - now
-            minutes = delta.seconds // 60
-            DEFAULT_COOKER.start(
-                PROFILES[profile.type],
-                schedule=minutes,
-                akw=config.cooker_config.akw,
-            )
-            scheduled = True
+    else:
+        # 预约下一天
+        next_day = now + timedelta(days=1)
+        delta = meal_profile_list[0].time.earliest_time.to_date_time(next_day) - now
+        minutes = delta.seconds // 60
+        DEFAULT_COOKER.start(
+            PROFILES[profile.type],
+            schedule=minutes,
+            akw=config.cooker_config.akw,
+        )
+        scheduled = True
 
-            main_logger.info(
-                f"小饭煲已上线，预定 {usual_time.strftime('%H:%M')}（{minutes}分钟后）烹饪完成（{profile.type}）并自动保温"
-            )
-            pushMessage(
-                config.cooker_config.name,
-                f"自动预定 {usual_time.strftime('%H:%M')}（{minutes}分钟后）烹饪完成（{profile.type}）并自动保温",
-            )
-            break
+        main_logger.info(
+            f"小饭煲已上线，预定 {usual_time.strftime('%H:%M')}（{minutes}分钟后）烹饪完成（{profile.type}）并自动保温"
+        )
+        pushMessage(
+            config.cooker_config.name,
+            f"自动预定 {usual_time.strftime('%H:%M')}（{minutes}分钟后）烹饪完成（{profile.type}）并自动保温",
+        )
 
 
 while True:
