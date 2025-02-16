@@ -137,7 +137,7 @@ def task():
             break
         else:
             # 预约下一天
-            next_day = now + timedelta
+            next_day = now + timedelta(days=1)
             delta = meal_profile_list[0].time.earliest_time.to_date_time(next_day) - now
             minutes = delta.seconds // 60
             DEFAULT_COOKER.start(
